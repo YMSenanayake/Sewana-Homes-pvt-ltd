@@ -1,0 +1,52 @@
+import express from "express"
+import cors from "cors"
+import "dotenv/config"
+import connectDB from "./config/mongodb.js"
+import { clerkMiddleware } from '@clerk/express'
+import clerkWebhooks from "./controllers/ClerkWebhook.js"
+import userRouter from "./routes/userRoute.js"
+import addressRouter from "./routes/addressRoute.js"
+import cartRouter from "./routes/cartRoute.js"
+import productRouter from "./routes/productRoute.js"
+import connectCloudinary from "./config/cloudinary.js"
+import orderRouter from "./routes/orderRoute.js"
+import contactRouter from "./routes/contactRoute.js"
+import { stripeWebhooks } from "./controllers/stripeWebhooks.js"
+
+
+await connectDB(); //Establish connection to the database
+await connectCloudinary() //setup cloudinary for image storage;
+
+
+const app = express()  // initialize express application
+app.use(cors()) //enable cross-Origin resource sharing
+
+// API to listen to stripe webhooks
+app.post("/api/stripe", express.raw({ type: 'application/json' }), stripeWebhooks)
+
+//middleware setup
+app.use(express.json()) // enables json request body parsing
+
+// Public routes (no Clerk auth required)
+app.use('/api/contact', contactRouter) // contact form
+
+// Clerk middleware and webhook listener
+app.use(clerkMiddleware())
+app.use("/api/clerk", clerkWebhooks)
+
+// define API Routes (require Clerk auth where used)
+app.use('/api/user', userRouter) // routes for user functionality
+app.use('/api/products', productRouter) // routes for handling products
+app.use('/api/addresses', addressRouter) // routes for handling addresses
+app.use('/api/cart', cartRouter) // routes for handling cart
+app.use('/api/orders', orderRouter) // routes for handling order
+
+// Route endpoint to check API status
+app.get('/', (req, res) => {
+    res.send("API Successfully connected")
+})
+
+const port = process.env.PORT || 3000 //define server port
+
+//start the server
+app.listen(port, () => console.log(`Server is running at http://localhost:${port}`))

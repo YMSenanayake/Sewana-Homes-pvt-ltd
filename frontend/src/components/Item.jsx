@@ -1,0 +1,54 @@
+import React, { useState } from 'react'
+import { useAppContext } from '../context/AppContext'
+
+const Item = ({ product }) => {
+    const { navigate, currency } = useAppContext()
+    const [hovered, setHovered] = useState(false)
+    const [size, setsize] = useState(product.sizes[0]) // default size (first in the array)
+
+    // colors to cycle through
+    const colors = ["#f2f2f2", "#f6f9f6", "#f6f8fe"]
+    // compute on index from product._id; parseInt fallback to 0 for safety
+    const bgcolor = colors[(parseInt(product._id?.slice(-4) || "0", 16)) %
+        colors.length]
+
+    return (
+        <div>
+            <div className="overflow-hidden w-[250px] rounded-xl group ">
+                {/* image */}
+                <div
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                    className="flexCenter h-[182px] w-[250px] transition-all duration-100 rounded-xl group relative"
+                    style={{ backgroundColor: bgcolor }}
+                >
+
+                    <img src={product.images.length > 1 && hovered ? product.images
+                    [1] : product.images[0]} alt="" height={144} width={144} />
+                    <div className='absolute bottom-1 left-1 right-1 block sm:hidden sm:group-hover:block'>
+                        <button
+                            onClick={() => {
+                                navigate(`/collection/${product._id}`);
+                                scrollTo(0, 0);
+                            }}
+                            className = 'btn-secondary !py-2 !px-0 w-full !text-xs'
+                        >
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+                {/* info */}
+                <div className="pt-3 p-1">
+                    {/* Title and description */}
+                    <div className='flexBetween'>
+                        <h5 className='h5 uppercase line-clamp-1'>{product.title}</h5>
+                        <p className='uppercase font-semibold '>{currency} {product.price[size]}.00</p>
+                    </div>
+                    <p className='line-clamp-2 pt-1'>{product.description}</p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Item
