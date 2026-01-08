@@ -47,10 +47,10 @@ const Collection = () => {
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
 
   return (
-    <div className='max-padd-container !px-0 mt-40'>
-      <div className='flex flex-col sm:flex-row gap-8 mb-16'>
+    <div className='max-padd-container !px-0 mt-33'>
+      <div className='flex flex-col  gap-8 mb-16'>
         {/* filter Option  */}
-        <div className='min-w-72 bg-primary p-4 pl-6 lg:pl-6 rounded-r-xl'>
+        <div className='min-w-72 p-4 pl-6 lg:pl-6 rounded-r-xl'>
           <SearchInput />
         </div>
         {/* right side - filterd products  */}
