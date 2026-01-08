@@ -44,18 +44,18 @@ const Hero = () => {
                     </div>
 
                     {/* Card */}
-                    <div className="bg-white p-3 max-w-[249px] rounded-2xl mt-20 mb-5 relative z-10">
-                        <div className='h-32 w-56 overflow-hidden'>
+                    <div className="bg-white p-3 max-w-[200px] md:max-w-[249px] h-40 md:h-58 rounded-2xl mt-20 mb-5 relative z-10">
+                        <div className='h-20 md:h-32 w-44 md:w-56  overflow-hidden'>
                             <img
                                 src={assets.hero}
                                 alt=""
                                 className='h-30 object-cover w-full rounded-2xl'
                             />
                         </div>
-                        <p className='text-[13px] pt-2'>
-                            <b className='uppercase'>Discover Rare Blue Lilies</b><br />
-                            Add a unique touch to your pond today.
-                            <Link to={'/collection'}><b> Shop Now</b></Link>
+                        <p className='text-[10px] md:text-[13px] pt-2'>
+                            <b className='uppercase'>Live the Luxury You Deserve</b><br />
+                            Extraordinary homes in the most sought-after locations.
+                            <Link to={'/collection'}><b> Find Your Home</b></Link>
                         </p>
                     </div>
                 </div>
