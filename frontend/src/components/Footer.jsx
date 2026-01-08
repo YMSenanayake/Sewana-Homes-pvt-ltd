@@ -3,12 +3,12 @@ import { assets } from "../assets/data";
 
 const Footer = () => {
     return (
-        <footer className="pt-16 xl:pt-20 w-full text-gray-500 bg-primary">
+        <footer className="pt-16 xl:pt-10 w-full text-gray-500 bg-primary">
             <div className='max-padd-container'>
                 <div className='flex flex-wrap justify-between gap-12 md:gap-6'>
                     <div className='max-w-80'>
                         {/* logo */}
-                        <div className="flex flex-1">
+                        <div className="flex flex-1 ">
                             <Link to={'/'} className='flex items-end'>
                                 <img src={assets.logoImg} alt="logoImg" className='h-30' />
                                 <span></span>

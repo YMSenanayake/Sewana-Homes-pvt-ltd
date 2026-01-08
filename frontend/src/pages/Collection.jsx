@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Item from '../components/Item'
 import { useAppContext } from '../context/AppContext'
 import SearchInput from '../components/SearchInput'
@@ -7,19 +7,9 @@ import SearchInput from '../components/SearchInput'
 const Collection = () => {
 
   const { products, searchQuery } = useAppContext()
-  const [category, setCategory] = useState([])
-  const [selectedSort, setSelectedSort] = useState("relevant")
   const [filteredProducts, setFilteredProducts] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 8
-
-  // predefined categories list 
-  const allCataegories = useMemo(() => ["Water Lily", "Lotus", "Ferilizer"], [])
-
-  // Reusable function to toggle filter values
-  const toggleFilter = (value, setState) => {
-    setState((prev) => prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value])
-  }
 
   // apply filter line search, category and instock
   const applyFilters = () => {
@@ -31,28 +21,12 @@ const Collection = () => {
       filtered = filtered.filter(product => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
     }
 
-    if (category.length) {
-      filtered = filtered.filter(product => category.includes(product.category))
-    }
-
     return filtered
   }
 
   // sorting logic based on price or relevent
   const applySorting = (productsList) => {
-    switch (selectedSort) {
-      case "low":
-        return [...productsList].sort((a, b) => Math.min(...Object.values(a.price)) - Math.min(...Object.values(b.price)))
-        break;
-
-      case "high":
-        return [...productsList].sort((a, b) => Math.min(...Object.values(b.price)) - Math.min(...Object.values(a.price)))
-        break;
-
-      default:
-        return productsList
-        break;
-    }
+    return productsList
   }
 
   //update filtered and sorted products whenever dependencies change
@@ -61,7 +35,7 @@ const Collection = () => {
     let sorted = applySorting(filtered)
     setFilteredProducts(sorted)
     setCurrentPage(1) // Reset to first page when filters change
-  }, [category, selectedSort, products, searchQuery])
+  }, [products, searchQuery])
 
   // handel pagination logic
   const getPaginatedProducts = () => {
@@ -78,25 +52,6 @@ const Collection = () => {
         {/* filter Option  */}
         <div className='min-w-72 bg-primary p-4 pl-6 lg:pl-6 rounded-r-xl'>
           <SearchInput />
-          <div className='px-4 py-3 mt-2 bg-white rounded-xl'>
-            <h5 className='h5 mb-4'>Sort By Price</h5>
-            <select onChange={(e) => setSelectedSort(e.target.value)} className='border border-slate-900/10 outline-none text-gray-30 medium-14 h-8 w-full px-2 rounded-md'>
-              <option value="relevant">Relevant</option>
-              <option value="low">Low</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-          <div className='pl-5 py-3 mt-4 bg-white rounded-xl'>
-            <h5 className='h5 mb-4'>Categories</h5>
-            <div className='flex flex-col gap-2 text-sm font-light'>
-              {allCataegories.map((cat) => (
-                <label key={cat} className='flex gap-2 medium-14 text-gray-30'>
-                  <input onChange={(e) => toggleFilter(e.target.value, setCategory)} type='checkbox' value={cat} checked={category.includes(cat)} className='w-3' />
-                  {cat}
-                </label>
-              ))}
-            </div>
-          </div>
         </div>
         {/* right side - filterd products  */}
         <div className='max-sm:px-10 sm:pr-10'>

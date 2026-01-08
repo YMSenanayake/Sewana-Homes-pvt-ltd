@@ -3,9 +3,6 @@ import search from "./search.svg";
 import user from "./user.svg";
 import menu from "./menu.svg";
 import menuClose from "./menu-close.svg";
-import cartAdd from "./cart-add.svg";
-import cartRemove from "./cart-remove.svg";
-import cartAdded from "./cart-added.svg";
 import forward from "./forward.svg";
 import badge from "./badge.svg";
 import heartAdd from "./heart-add.svg";
@@ -66,9 +63,6 @@ export const assets = {
   user,
   menu,
   menuClose,
-  cartAdd,
-  cartRemove,
-  cartAdded,
   forward,
   badge,
   heartAdd,

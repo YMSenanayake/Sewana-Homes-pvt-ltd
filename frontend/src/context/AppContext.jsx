@@ -11,12 +11,9 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [cartItems, setCartItems] = useState({});
-    const [method, setMethod] = useState('BT');
     const [isOwner, setIsOwner] = useState(false);
     const navigate = useNavigate();
     const currency = import.meta.env.VITE_CURRENCY;
-    const delivery_charges = 0; // shipping removed
 
     // Clerk
     const { user } = useUser();
@@ -31,7 +28,6 @@ export const AppContextProvider = ({ children }) => {
 
             if (data.success) {
                 setIsOwner(data.role === 'owner');
-                setCartItems(data.cartData || {});
             } else {
                 // Retry fetching user details after 5 seconds
                 setTimeout(() => {
@@ -57,78 +53,6 @@ export const AppContextProvider = ({ children }) => {
         }
     };
 
-    // Add product to cart
-    const addToCart = async (itemId, size) => {
-        if (!size) return toast.error('Please select a size first');
-        const cartData = structuredClone(cartItems);
-        cartData[itemId] = cartData[itemId] || {};
-        cartData[itemId][size] = (cartData[itemId][size] || 0) + 1;
-        setCartItems(cartData);
-
-        if (user) {
-            try {
-                const { data } = await axios.post("/api/cart/add", { itemId, size }, {
-                    headers: { Authorization: `Bearer ${await getToken()}` },
-                });
-                if (data.success) {
-                    toast.success(data.message)
-                } else {
-                    toast.error(data.message)
-                }
-            } catch (error) {
-                toast.error(error.message);
-            }
-        }
-
-    };
-
-    // Get cart count
-    const getCartCount = () => {
-        let count = 0;
-        for (const itemId in cartItems) {
-            for (const size in cartItems[itemId]) {
-                count += cartItems[itemId][size];
-            }
-        }
-        return count;
-    };
-
-    // Update cart quantity
-    const updateQuantity = async (itemId, size, quantity) => {
-        const cartData = structuredClone(cartItems);
-        cartData[itemId][size] = quantity;
-        setCartItems(cartData);
-
-        if (user) {
-            try {
-                const { data } = await axios.post("/api/cart/update", { itemId, size, quantity }, {
-                    headers: { Authorization: `Bearer ${await getToken()}` },
-                });
-
-                if (data.success) {
-                    toast.success(data.message)
-                } else {
-                    toast.error(data.message)
-                }
-            } catch (error) {
-                toast.error(error.message)
-            }
-        }
-    };
-
-    // Get cart amount
-    const getCartAmount = () => {
-        let total = 0;
-        for (const itemId in cartItems) {
-            const product = products.find((p) => p._id === itemId);
-            if (!product) continue;
-            for (const size in cartItems[itemId]) {
-                total += product.price[size] * cartItems[itemId][size];
-            }
-        }
-        return total;
-    };
-
     useEffect(() => {
         if (user) {
             getUser();
@@ -147,15 +71,6 @@ export const AppContextProvider = ({ children }) => {
         currency,
         searchQuery,
         setSearchQuery,
-        cartItems,
-        setCartItems,
-        method,
-        setMethod,
-        delivery_charges,
-        addToCart,
-        getCartCount,
-        updateQuantity,
-        getCartAmount,
         isOwner,
         setIsOwner,
         axios,
