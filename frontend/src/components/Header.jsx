@@ -57,7 +57,7 @@ const Header = () => {
                 <div className="flex flex-1 items-center sm:justify-end gap-x-4 sm:gap-x-8">
                     <div>
                         {isOwner && (
-                            <button onClick={() => navigate('/owner')} className='btn-outline px-2 py-1 text-xs font-semibold'>
+                            <button onClick={() => navigate('/owner/add-product')} className='btn-outline px-2 py-1 text-xs font-semibold'>
                                 Dashboard
                             </button>
                         )}

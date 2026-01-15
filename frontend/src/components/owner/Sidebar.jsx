@@ -10,11 +10,7 @@ const Sidebar = () => {
     const { navigate, isOwner, user } = useAppContext()
 
     const navItems = [
-        {
-            path: "/owner",
-            label: "Dashboard",
-            icon: assets.dashboard,
-        },
+    
         {
             path: "/owner/add-product",
             label: "Add Product",
