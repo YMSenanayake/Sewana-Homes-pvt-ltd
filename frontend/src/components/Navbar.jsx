@@ -6,7 +6,7 @@ const Navbar = ({ containerStyles,setMenuOpened }) => {
   const navLink = [
     { path: '/', title: 'Home' },
     { path: '/collection', title: 'Collection' },
-    { path: '/blog', title: 'Blog' },
+    { path: '/blog', title: 'AboutUs' },
     { path: '/contact', title: 'Contact' },
   ];
 
@@ -15,7 +15,7 @@ const Navbar = ({ containerStyles,setMenuOpened }) => {
   return (
     <nav className={`${containerStyles}`}>
       {navLink.map((link) => (
-        <NavLink onClick={()=>setMenuOpened(false)} key={link.title} to={link.path} className={({ isActive }) => `${isActive ? "active-link" : ""} p-2.5 px-4 rounded-full capitalize text-sm font-semibold`}>
+        <NavLink onClick={()=>setMenuOpened(false)} key={link.title} to={link.path} className={({ isActive }) => `${isActive ? "active-link" : ""} p-2.5 px-5 rounded-full capitalize text-sm font-semibold`}>
           {link.title}
         </NavLink>
       ))}
