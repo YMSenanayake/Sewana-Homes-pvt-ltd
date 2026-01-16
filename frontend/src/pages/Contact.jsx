@@ -14,7 +14,7 @@ export default function Contact() {
         setLoading(true)
         try {
             // use VITE_BACKEND_URL when set, otherwise default to localhost during development
-            const backendBase = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '') || (location.hostname === 'localhost' ? 'https://uththama-water-liliy-backend.vercel.app/' : '')
+            const backendBase = (import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '') || (location.hostname === 'localhost' ? 'https://sewana-homes-pvt-ltd-backend.vercel.app/' : '')
             const url = backendBase ? `${backendBase}/api/contact` : '/api/contact'
             const res = await fetch(url, {
                 method: 'POST',
